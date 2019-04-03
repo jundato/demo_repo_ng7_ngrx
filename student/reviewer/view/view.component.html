@@ -1,0 +1,81 @@
+<div class="page-layout simple fullwidth" fxLayout="column">
+  <!-- HEADER -->
+  <div
+    class="header accent p-24 h-160"
+    fxLayout="row"
+    fxLayoutAlign="start center"
+  >
+    <div fxLayout="column" fxLayoutAlign="center start">
+      <div fxLayout="row" fxLayoutAlign="start center">
+        <mat-icon class="secondary-text s-18">home</mat-icon>
+        <mat-icon class="secondary-text s-16">chevron_right</mat-icon>
+        <span class="secondary-text">Reviewers</span>
+      </div>
+      <div class="h1 mt-16">My Reviewers</div>
+    </div>
+  </div>
+  <!-- / HEADER -->
+
+  <!-- SUB HEADER -->
+  <div class="m-20 h-40" fxLayout="row" fxLayoutAlign="space-between center">
+    <div class="h2">{{ reviewerState.title }}</div>
+
+    <div>
+      <button
+        mat-raised-button
+        color="primary"
+        [disabled]="!reviewerState.hasLoaded"
+        [routerLink]="'/student/reviewer/exam/' + reviewerState.id"
+      >
+        <mat-icon>assignment</mat-icon>
+        Take Mock Exam
+      </button>
+    </div>
+  </div>
+  <!-- / HEADER -->
+
+  <!-- CONTENT -->
+  <div class="content">
+    <!-- SIDEBAR -->
+    <mat-drawer-container fxFlex>
+      <!-- SIDEBAR CONTENT -->
+      <mat-drawer mode="side" position="end" opened>
+        <mat-list>
+          <h3 matSubheader>SECTIONS</h3>
+
+          <mat-list-item *ngFor="let section of viewState.sections">
+            <button
+              mat-button
+              [color]="section.isSelected ? 'accent' : 'default'"
+              (click)="onSectionSelected(section.orderNo)"
+            >
+              {{ section.title }}
+              <mat-icon *ngIf="section.isSelected">
+                keyboard_arrow_left
+              </mat-icon>
+            </button>
+          </mat-list-item>
+        </mat-list>
+        <!-- / SIDEBAR CONTENT -->
+      </mat-drawer>
+      <!-- / SIDEBAR -->
+
+      <!-- CENTER -->
+      <mat-drawer-content>
+        <!-- CONTENT -->
+        <div class="content p-24">
+          <div *ngFor="let question of viewState?.questions">
+            <p>{{ question.orderNo }}. {{ question.questionText }}</p>
+            <ul>
+              <li *ngFor="let answer of question.answers">
+                {{ answer.orderNo }} - {{ answer.answerText }}
+              </li>
+            </ul>
+          </div>
+        </div>
+        <!-- / CONTENT -->
+      </mat-drawer-content>
+      <!-- / CENTER -->
+    </mat-drawer-container>
+  </div>
+</div>

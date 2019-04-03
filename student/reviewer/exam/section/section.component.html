@@ -1,0 +1,59 @@
+<ng-container
+  *ngIf="
+    examSettings.progression === 'QUESTION_BY_QUESTION' && !section.hasStarted;
+    then waitForUserInitialize;
+    else takeSectionExam
+  "
+>
+</ng-container>
+
+<ng-template #takeSectionExam>
+  <exam-countdown
+    [hasStarted]="section.hasStarted"
+    [timeLimit]="section.timeLimit"
+    [sectionOrderNo]="section.orderNo"
+    *ngIf="isActive"
+  >
+  </exam-countdown>
+  <mat-list class="pt-0">
+    <mat-list-item
+      class="pb-12"
+      *ngFor="let question of filterQuestions(section.questions); last as last"
+    >
+      <div
+        student-exam-question
+        class="pb-12  w-100-p"
+        fxLayout="column"
+        fxLayoutAlign="center start"
+        [question]="question"
+        [section]="section"
+      ></div>
+      <mat-divider [inset]="true" *ngIf="!last"></mat-divider>
+    </mat-list-item>
+  </mat-list>
+</ng-template>
+
+<ng-template #waitForUserInitialize>
+  <mat-card>
+    <div>
+      <span class="mat-headline">{{ section.title }}</span>
+    </div>
+    <div>
+      <span class="mat-body-1">{{ section.description }}</span>
+    </div>
+    <div>
+      <ul>
+        <li>{{ section.numberOfQuestions }} items</li>
+        <li>{{ section.questions.length }} unique questions</li>
+        <li *ngIf="examSettings.timeLimit === 'TIME_LIMIT_SECTION'">
+          {{ section.timeLimit }} mins. time limit
+        </li>
+      </ul>
+    </div>
+    <div xLayout="row" fxLayoutAlign="stretch">
+      <button fxFlex mat-raised-button (click)="onClickBeginSection()">
+        BEGIN
+      </button>
+    </div>
+  </mat-card>
+</ng-template>

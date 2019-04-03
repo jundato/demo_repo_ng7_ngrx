@@ -1,0 +1,27 @@
+<div fxFlex fxLayout="row">
+  <div fxFlex="40px" fxFlexAlign="stretch" fxLayoutAlign="center start">
+    <span class="font-size-16">{{ question.index + 1 }}.</span>
+  </div>
+  <div fxFlex fxLayout="column" fxLayoutAlign="start stretch">
+    <span class="font-size-16">{{ question.questionText }}</span>
+    <mat-list role="list">
+      <mat-list-item class="my-4" *ngFor="let answer of question.answers">
+        <student-exam-answer
+          [answer]="answer"
+          [question]="question"
+          [section]="section"
+        ></student-exam-answer>
+      </mat-list-item>
+    </mat-list>
+  </div>
+</div>
+<div
+  class="pt-20 w-100-p"
+  fxLayout="row"
+  fxLayoutAlign="stretch"
+  *ngIf="examSettings?.progression === 'QUESTION_BY_QUESTION'"
+>
+  <button fxFlex mat-raised-button (click)="onClickNextQuestion()">
+    Next
+  </button>
+</div>

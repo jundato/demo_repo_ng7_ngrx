@@ -1,0 +1,16 @@
+<div class="p-20" fxFlex="100" fxLayout="row" fxLayoutAlign="center center">
+  <mat-icon class="mr-20">
+    timer
+  </mat-icon>
+  <mat-progress-bar
+    class="example-margin"
+    [color]="countdown.color"
+    mode="determinate"
+    [value]="countdown.timeLeftValue"
+  >
+  </mat-progress-bar>
+  <div class="counter text-right">
+    <span *ngIf="countdown.hours > 0">{{ countdown.hours }} :</span>
+    <span> {{ countdown.minutes }} : {{ countdown.seconds }} </span>
+  </div>
+</div>

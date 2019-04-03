@@ -1,0 +1,65 @@
+<div class="page-layout simple fullwidth" fxLayout="column">
+  <!-- HEADER -->
+  <div class="header accent p-24 h-160" fxLayout="row" fxLayoutAlign="start center">
+    <div fxLayout="column" fxLayoutAlign="center start">
+      <div fxLayout="row" fxLayoutAlign="start center">
+        <mat-icon class="secondary-text s-18">home</mat-icon>
+        <mat-icon class="secondary-text s-16">chevron_right</mat-icon>
+        <span class="secondary-text">Reviewers</span>
+      </div>
+      <div class="h1 mt-16">My Reviewers</div>
+    </div>
+  </div>
+  <!-- / HEADER -->
+
+  <!-- CONTENT -->
+  <div class="content p-24">
+    <div fxLayout="column" fxLayoutAlign="center">
+
+      <div class="filters" fxLayout="column" fxLayoutAlign="center center" fxLayout.gt-xs="row"
+        fxLayoutAlign.gt-xs="space-between center">
+
+        <mat-form-field appearance="outline" floatLabel="always" class="course-search">
+          <mat-label>Search for a course</mat-label>
+          <input matInput placeholder="Enter a keyword..." [(ngModel)]="searchTerm" (input)="filterCoursesByTerm()">
+        </mat-form-field>
+
+        <!-- <mat-form-field appearance="outline" class="category-selector">
+          <mat-label>Category</mat-label>
+          <mat-select [(ngModel)]="currentCategory" >
+            <mat-option [value]="'all'">
+              All
+            </mat-option>
+            <mat-option *ngFor="let category of categories" [value]="category.value">
+              {{ category.label }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field> -->
+
+      </div>
+
+      <div fxLayout="row" fxLayoutAlign="center" fxLayoutGap="20px">
+        <mat-card *ngFor="let reviewer of reviewers" fxFlex="100" fxFlex.gt-xs="50" fxFlex.gt-sm="33">
+          <!-- <mat-card-header>
+            <div mat-card-avatar class="example-header-image"></div>
+            <mat-card-title>Shiba Inu</mat-card-title>
+            <mat-card-subtitle>Dog Breed</mat-card-subtitle>
+          </mat-card-header> -->
+          <!-- <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg"
+            alt="Photo of a Shiba Inu"> -->
+          <mat-card-content>
+            <div class="p-16">
+              <div class="h1">{{ reviewer.title }}</div>
+            </div>
+            <p>
+              {{ reviewer.description }}
+            </p>
+          </mat-card-content>
+          <mat-card-actions>
+            <button mat-button [routerLink]="'/student/reviewer/view/' + reviewer.id">VIEW</button>
+          </mat-card-actions>
+        </mat-card>
+      </div>
+    </div>
+  </div>
+</div>

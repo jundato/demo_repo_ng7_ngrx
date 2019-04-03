@@ -1,0 +1,149 @@
+<div class="page-layout simple fullwidth" fxLayout="column">
+  <!-- HEADER -->
+  <div
+    class="header accent p-24 h-160"
+    fxLayout="row"
+    fxLayoutAlign="start center"
+  >
+    <div fxLayout="column" fxLayoutAlign="center start">
+      <div fxLayout="row" fxLayoutAlign="start center">
+        <mat-icon class="secondary-text s-18">home</mat-icon>
+        <mat-icon class="secondary-text s-16">chevron_right</mat-icon>
+        <span class="secondary-text">Reviewers</span>
+      </div>
+      <div class="h1 mt-16">My Reviewers</div>
+    </div>
+  </div>
+  <!-- / HEADER -->
+
+  <!-- SUB HEADER -->
+  <div class="m-20 h-40" fxLayout="row" fxLayoutAlign="space-between center">
+    <div class="h2">{{ reviewerState.title }}</div>
+  </div>
+  <!-- / SUB HEADER -->
+
+  <!-- CONTENT -->
+  <div class="content">
+    <!-- SIDEBAR -->
+
+    <mat-tab-group
+      fxLayout="column"
+      fxFlex="100"
+      fxLayoutAlign="center stretch"
+      [selectedIndex]="activeSectionOrderNo"
+    >
+      >
+      <mat-tab fxFlex="100" fxLayout="column" [disabled]="examState.hasStarted">
+        <ng-template mat-tab-label>Start</ng-template>
+        <div
+          class="h-100-p"
+          fxLayout="row"
+          fxFlex="100"
+          fxLayoutAlign="center stretch"
+        >
+          <mat-card fxFlex="70">
+            <div>
+              <span class="mat-headline">{{ reviewerState.title }}</span>
+            </div>
+            <div>
+              <span class="mat-body-1">{{ reviewerState.description }}</span>
+            </div>
+
+            <div>
+              <span class="mat-title">
+                Sections
+              </span>
+            </div>
+            <dl *ngFor="let section of reviewerState.sections">
+              <dt>{{ section.title }}</dt>
+              <dd>
+                {{ section.description }}
+                <ul>
+                  <li>{{ section.numberOfQuestions }} items</li>
+                  <li>{{ section.questions.length }} unique questions</li>
+                  <li *ngIf="timeLimitType === 'TIME_LIMIT_SECTION'">
+                    {{ section.timeLimit }} mins. time limit
+                  </li>
+                </ul>
+              </dd>
+            </dl>
+          </mat-card>
+          <mat-card fxFlex="30">
+            <div>
+              <form
+                [formGroup]="form"
+                autocomplete="off"
+                novalidate
+                class="dialog-form"
+              >
+                <mat-form-field>
+                  <mat-label>Progression</mat-label>
+                  <mat-select formControlName="progression">
+                    <mat-option
+                      *ngFor="let progression of progressionTypes"
+                      [value]="progression.value"
+                    >
+                      {{ progression.display }}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+                <mat-form-field>
+                  <mat-label>Time Limit</mat-label>
+                  <mat-select
+                    formControlName="timeLimit"
+                    (selectionChange)="onTimeLimitChange($event)"
+                  >
+                    <mat-option
+                      *ngFor="let limitType of timeLimitTypes"
+                      [value]="limitType.value"
+                    >
+                      {{ limitType.display }}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+                <button
+                  mat-raised-button
+                  color="primary"
+                  (click)="onClickStart()"
+                  [disabled]="!hasLoadedReviewer"
+                >
+                  Start
+                </button>
+              </form>
+            </div>
+          </mat-card>
+        </div>
+      </mat-tab>
+      <mat-tab
+        fxFlex="100"
+        fxLayout="column"
+        *ngFor="let section of examState?.sections"
+        [disabled]="
+          !(
+            examSettings?.progression === 'FREE_MODE' && examState?.hasStarted
+          ) &&
+          !(
+            examSettings?.progression === 'QUESTION_BY_QUESTION' &&
+            examState?.hasStarted &&
+            activeSectionOrderNo === section.orderNo
+          )
+        "
+      >
+        <ng-template mat-tab-label>
+          {{ section.title }}
+        </ng-template>
+
+        <student-exam-section
+          class="h-100-p"
+          fxFlex="100"
+          [section]="section"
+          [isActive]="section.orderNo === activeSectionOrderNo"
+        >
+        </student-exam-section>
+      </mat-tab>
+      <mat-tab [disabled]="!examState?.hasFinished">
+        <ng-template mat-tab-label>End</ng-template>
+      </mat-tab>
+    </mat-tab-group>
+  </div>
+</div>
